@@ -4,6 +4,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { ENV_VAR } from './constants/index.js';
+import parcelsRouter from './routers/index.js';
 
 const PORT = +getEnvVar(ENV_VAR.MONGODB_PORT, 3000);
 
@@ -13,8 +14,10 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cors());
 
-  app.use('*', notFoundHandler);
+  app.use('/parcels', parcelsRouter);
+
   app.use(errorHandler);
+  app.use(notFoundHandler);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
